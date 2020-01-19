@@ -43,6 +43,8 @@ let mapleader = ','   " Map the leader key to a comma.
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
+"Neerdtree plugin - desplaying the folders tree"
+Plug 'scrooloose/nerdtree'
 Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'} 
 Plug 'scrooloose/syntastic'
 " List ends here. Plugins become visible to Vim after this call.
@@ -72,3 +74,10 @@ let g:syntastic_filetype_map = { 'rnoweb': 'tex'}
 "Settings Ctags
 set tags=tags
 
+"NERDTree Settings"
+"Bookmarks"
+let NERDTreeShowBookmarks=1 "Display bookmarks on startup"
+autocmd VimEnter * NERDTree "Enable NERDTree on Vim Startup"
+" Autoclose NERDTree if it's the only open window left.
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
+   \ b:NERDTree.isTabTree()) | q | endif
