@@ -2,6 +2,23 @@
 set shell=/bin/zsh
 syntax on                  " Enable syntax highlighting.
 filetype plugin indent on  " Enable file type based indentation.
+set laststatus=2
+
+let g:currentmode={
+       \ 'n'  : 'NORMAL ',
+       \ 'v'  : 'VISUAL ',
+       \ 'V'  : 'V·Line ',
+       \ '' : 'V·Block ',
+       \ 'i'  : 'INSERT ',
+       \ 'R'  : 'R ',
+       \ 'Rv' : 'V·Replace ',
+       \ 'c'  : 'Command ',
+       \}
+
+set statusline=
+set statusline+=\ %{toupper(g:currentmode[mode()])}
+set statusline+=%{&modified?'[+]':''}
+"" use highlight group User2
 
 set autoindent             " Respect indentation when starting a new line.
 set expandtab              " Expand tabs to spaces. Essential in Python.
@@ -47,8 +64,24 @@ call plug#begin('~/.vim/plugged')
 Plug 'scrooloose/nerdtree'
 Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'} 
 Plug 'scrooloose/syntastic'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+""Plug 'liuchengxu/space-vim-dark'
+Plug 'dikiaap/minimalist'
 " List ends here. Plugins become visible to Vim after this call.
+
 call plug#end()
+
+"Setting up the colorcheme"
+""colorscheme space-vim-dark
+""hi Normal     ctermbg=NONE guibg=NONE
+""hi LineNr     ctermbg=NONE guibg=NONE
+""hi SignColumn ctermbg=NONE guibg=NONE
+set t_Co=256
+syntax on
+colorscheme minimalist
+
+
 
 "Setting up Imports - Java
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
@@ -77,7 +110,22 @@ set tags=tags
 "NERDTree Settings"
 "Bookmarks"
 let NERDTreeShowBookmarks=1 "Display bookmarks on startup"
-autocmd VimEnter * NERDTree "Enable NERDTree on Vim Startup"
+"autocmd VimEnter * NERDTree "Enable NERDTree on Vim Startup"
 " Autoclose NERDTree if it's the only open window left.
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") &&
    \ b:NERDTree.isTabTree()) | q | endif
+
+"FZF customazing "
+" [Buffers] Jump to the existing window if possible
+let g:fzf_buffers_jump = 1
+
+" [[B]Commits] Customize the options used by 'git log':
+let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+
+" [Tags] Command to generate tags file
+let g:fzf_tags_command = 'ctags -R'
+
+" [Commands] --expect expression for directly executing the command
+let g:fzf_commands_expect = 'alt-enter,ctrl-x'
+
+
