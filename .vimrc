@@ -1,12 +1,6 @@
 "setup shell
-set shell=/bin/zsh
 syntax on                  " Enable syntax highlighting.
 filetype plugin indent on  " Enable file type based indentation.
-
-"Setting up the colorcheme"
-syntax enable
-set background=dark
-colorscheme solarized
 
 set laststatus=2
 
@@ -74,6 +68,8 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Use release branch (Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'pangloss/vim-javascript'
+Plug 'dense-analysis/ale'
 " List ends here. Plugins become visible to Vim after this call.
 
 call plug#end()
@@ -86,7 +82,7 @@ imap <F5> <Plug>(JavaComplete-Imports-Add)
 autocmd FileType java set makeprg=javac\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C.%#
 setlocal omnifunc=javacomplete#Complete
-let g:JavaComplete_JavaCompiler="/Library/Java/JavaVirtualMachines/jdk1.8.0_231.jdk/Contents/Home/bin"
+let g:JavaComplete_JavaCompiler="/usr/java/jdk1.8.0_241/bin"
 
 " Syntastic Settings
 ""Let g:syntastic_always_populate_loc_list=1
@@ -96,8 +92,8 @@ let g:syntastic_auto_loc_list = 2
 let g:syntastic_enable_signs = 1
 let g:syntastic_java_checkers = ['checkstyle', 'javac']
 let g:syntastic_java_javac_delete_output = 1
-let g:syntastic_java_checkstyle_conf_file = '/Users/omarortega/.vim/custom/config/sun_checks.xml'
-let g:syntastic_java_checkstyle_classpath = '/Users/omarortega/.vim/custom/config/checkstyle-8.27-all.jar'
+let g:syntastic_java_checkstyle_conf_file = '/home/omar/.vim/custom/config/sun_checks.xml'
+let g:syntastic_java_checkstyle_classpath = '/home/omar/.vim/custom/config/checkstyle-8.27-all.jar'
 let g:syntastic_filetype_map = { 'rnoweb': 'tex'}
 
 "Settings Ctags
@@ -252,3 +248,17 @@ nnoremap <silent> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+"Setting up vim-javascript"
+let g:javascript_plugin_jsdoc = 1 "Enables syntax highlighting for JSDocs"
+let g:javascript_plugin_ngdoc = 1 "Enables some additional syntax highlighting for NGDocs"
+
+"Setting up ALE plugin for error prompt"
+let g:ale_sign_error = '❌'
+let g:ale_sign_warning = '⚠️'
+highlight ALEErrorSign ctermbg=NONE ctermfg=red
+highlight ALEWarningSign ctermbg=NONE ctermfg=yellow
+
+"Setting up cocPrettier"
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
