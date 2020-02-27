@@ -1,7 +1,8 @@
 "setup shell
 syntax on                  " Enable syntax highlighting.
 filetype plugin indent on  " Enable file type based indentation.
-
+set directory=$HOME/.vim/swap//
+set t_Co=256
 set laststatus=2
 
 let g:currentmode={
@@ -24,7 +25,7 @@ set autoindent             " Respect indentation when starting a new line.
 set expandtab              " Expand tabs to spaces. Essential in Python.
 set tabstop=4              " Number of spaces tab is counted for.
 set shiftwidth=4           " Number of spaces to use for autoindent.
-
+silent! helptags ALL       " Load help files for all plugins"
 set backspace=2            " Fix backspace behavior on most terminals.
 
 " Navigate windows with <Ctrl-hjkl> instead of <Ctrl-w> followed by hjkl.
@@ -41,14 +42,19 @@ set relativenumber              " Display relative column numbers.
 
 set hlsearch                    " Highlight search results.
 set incsearch                   " Search as you type.
+set clipboard=unnnamed,unnamedplus "Copy into system (*, +)registers"
 
 " Map arrow keys nothing so I can get used to hjkl-style movement.
-map <up> <nop>
-map <down> <nop>
-map <left> <nop>
-map <right> <nop>
+"map <up> <nop>
+"map <down> <nop>
+"map <left> <nop>
+"map <right> <nop>
 
-" Immediately add a closing quotes or braces in insert mode.
+nmap <left>  :3wincmd <<cr>
+nmap <right> :3wincmd ><cr>
+nmap <up>    :3wincmd +<cr>
+nmap <down>  :3wincmd -<cr>
+
 inoremap ' ''<esc>i
 inoremap " ""<esc>i
 inoremap ( ()<esc>i
@@ -66,18 +72,39 @@ Plug 'artur-shaik/vim-javacomplete2', {'for': 'java'}
 Plug 'scrooloose/syntastic'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Use release branch (Recommend)
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'pangloss/vim-javascript'
 Plug 'dense-analysis/ale'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'drewtempelmeyer/palenight.vim'
 " List ends here. Plugins become visible to Vim after this call.
 
 call plug#end()
 
+set background=dark
+colorscheme palenight
+
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set background=dark
+colorscheme elflord
+
+let g:netrw_banner = 0
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 20
 
 "Setting up Imports - Java
 nmap <F5> <Plug>(JavaComplete-Imports-Add)
 imap <F5> <Plug>(JavaComplete-Imports-Add)
+nmap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+imap <F6> <Plug>(JavaComplete-Imports-AddMissing)
+nmap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+imap <F7> <Plug>(JavaComplete-Imports-RemoveUnused)
+let g:JavaComplete_LibsPath="/home/omar/.m2/repository/org/seleniumhq/selenium"
+let g:JavaComplete_LibsPath="/home/omar/.m2/repository/io/appium/java-client/6.1.0"
+
 " Easy compile java in vim
 autocmd FileType java set makeprg=javac\ %
 set errorformat=%A%f:%l:\ %m,%-Z%p^,%-C.%#
@@ -86,6 +113,7 @@ let g:JavaComplete_JavaCompiler="/usr/java/jdk1.8.0_241/bin"
 
 " Syntastic Settings
 ""Let g:syntastic_always_populate_loc_list=1
+let g:syntastic_error_symbol = '✗'
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_auto_loc_list = 2
@@ -195,7 +223,6 @@ nmap <leader>f  <Plug>(coc-format-selected)
 augroup mygroup
   autocmd!
   " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
