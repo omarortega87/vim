@@ -44,6 +44,8 @@ Plug 'sainnhe/everforest'
 Plug 'itchyny/lightline.vim'
 Plug 'preservim/vim-markdown'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'tpope/vim-cucumber'
+Plug 'tpope/vim-dispatch'
 
 call plug#end()
 
